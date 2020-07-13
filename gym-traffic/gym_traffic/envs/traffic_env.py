@@ -1,4 +1,3 @@
-import gym
 import itertools
 from gym import error, spaces, utils
 from gym.utils import seeding
@@ -68,7 +67,7 @@ class TrafficEnv(discrete.DiscreteEnv):
         else:
             pos_suffix = '0'
             
-        return 'x'+str(row)+'y'+str(col)+'pos'+pos_suffix
+        return 'x'+str(col)+'y'+str(row)+'pos'+pos_suffix
 
     def reset(self):
         self.iter_count = 0
@@ -107,26 +106,22 @@ class TrafficEnv(discrete.DiscreteEnv):
         coord[1] = max(coord[1], 0)
         return coord
 
-    def render(self, mode='human'):
+    def render(self, state, mode="human"):
         outfile = StringIO() if mode == 'ansi' else sys.stdout
-        print(self.shape[0])
-        for x in range(self.shape[0]-1):
-            for y in range(self.shape[1]):
+        output = ''
+        for y in range(self.shape[0]):
+            output = output.rstrip()
+            output += '\n'
+            for x in range(self.shape[1]):
                 position = [x,y]
-                p_x = self.s.split("x",1)[1].split("y",1)[0]
-                p_y = self.s.split("y",1)[1].split("p",1)[0]
+                p_x = state.split("x",1)[1].split("y",1)[0]
+                p_y = state.split("y",1)[1].split("p",1)[0]
                 if str(x) == p_x and str(y) == p_y:
                     output = " X "
                 elif position in self.coin_positions:
                     output = " C "
                 else:
                     output = " o "
-
-                if position[0] == self.shape[0]-1:
-                    output = output.rstrip()
-                    output += '\n'
-                else:
-                    output = output.lstrip()
 
                 outfile.write(output)
             outfile.write('\n')
