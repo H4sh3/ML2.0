@@ -21,7 +21,7 @@ def gen_permutation(positions):
             res.append(tmp)
     return res
 
-class TrafficEnv(discrete.DiscreteEnv):
+class CollectEnv(discrete.DiscreteEnv):
     metadata = {'render.modes': ['human']}
 
     def __init__(self):
@@ -52,7 +52,7 @@ class TrafficEnv(discrete.DiscreteEnv):
         self.states = P.keys()
         self.reset()
         isd = self.encode_state(0, 0, self.coin_positions)
-        super(TrafficEnv, self).__init__(self.nS, self.nA, P, isd)
+        super(CollectEnv, self).__init__(self.nS, self.nA, P, isd)
 
     
     def encode_state(self, row, col, coin_pos):
@@ -60,8 +60,7 @@ class TrafficEnv(discrete.DiscreteEnv):
         if len(coin_pos) > 0:
             for p in coin_pos:
                 if len(p) > 0:
-                    pos_suffix+=str(p[0])
-                    pos_suffix+=str(p[1])
+                    pos_suffix += str(p[0])+str(p[1])+':'
                 else:
                     pos_suffix = '0'
         else:
@@ -119,7 +118,7 @@ class TrafficEnv(discrete.DiscreteEnv):
                 if str(x) == p_x and str(y) == p_y:
                     output = " X "
                 elif position in self.coin_positions:
-                    output = " C "
+                    output = " * "
                 else:
                     output = " o "
 

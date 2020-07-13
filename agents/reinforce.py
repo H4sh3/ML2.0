@@ -4,7 +4,7 @@ import numpy as np
 from time import sleep
 from IPython.display import clear_output
 
-env = gym.make('gym_traffic:traffic-v0')
+env = gym.make('gym_collect:collect-v0')
 print('env init done!')
 
 epochs = 0
@@ -46,7 +46,7 @@ for i in range(1, 2000):
         state = next_state
         epochs += 1
 
-    if i % 1 == 0:
+    if i % 100 == 0:
         clear_output(wait=True)
         print(f"Episode: {i} {env.iter_count}")
     
